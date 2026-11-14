@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-11-14T00:00:00.000Z" agent="AWS-SAA" etag="aws-saa" version="21.0.0" type="device">
+  <diagram id="diagram_1" name="Project 6 Architecture">
+    <mxGraphModel dx="1422" dy="850" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="users" value="Web / Mobile Users" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="250" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="alb" value="Application Load Balancer
+Path-based Routing Rules:
+/api/auth* | /api/orders* | /api/notifications*" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="240" y="220" width="260" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="cluster" value="Amazon ECS Cluster (AWS Fargate Serverless Compute)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#FF9900;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="60" width="550" height="460" as="geometry" />
+        </mxCell>
+        <mxCell id="svc_auth" value="Auth Microservice (Fargate)
+Task Def: 0.25 vCPU / 512MB RAM
+Target Group 1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="100" width="230" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="svc_orders" value="Orders Microservice (Fargate)
+Task Def: 0.5 vCPU / 1GB RAM
+Target Group 2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="240" width="230" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="svc_notif" value="Notifications Microservice (Fargate)
+Task Def: 0.25 vCPU / 512MB RAM
+Target Group 3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="380" width="230" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="cloudmap" value="AWS Cloud Map (Service Discovery)
+Private DNS: orders.corp.local" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="860" y="160" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="redis" value="Amazon ElastiCache Redis
+Shared Session Store &amp; Cache" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="860" y="270" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="secrets" value="AWS Secrets Manager
+Dynamic DB Credentials Injection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;" vertex="1" parent="1">
+          <mxGeometry x="860" y="380" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ecr" value="Amazon ECR
+Docker Container Registries" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" vertex="1" parent="1">
+          <mxGeometry x="580" y="550" width="230" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="cicd" value="AWS CodePipeline + CodeDeploy
+Blue/Green Deployment Engine" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="860" y="550" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="HTTPS Requests" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="users" target="alb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="/api/auth/*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="alb" target="svc_auth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="/api/orders/*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="alb" target="svc_orders">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="/api/notifications/*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="alb" target="svc_notif">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="Discover Orders API" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="svc_auth" target="cloudmap">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="Read/Write JWT Session" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="svc_auth" target="redis">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="Query Product Cache" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="svc_orders" target="redis">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="Fetch DB Password" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="svc_orders" target="secrets">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="Pull Docker Images" style="dashed=1;" edge="1" parent="1" source="ecr" target="cluster">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="Blue/Green Shift (CodeDeploy)" style="dashed=1;" edge="1" parent="1" source="cicd" target="cluster">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

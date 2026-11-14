@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-11-14T00:00:00.000Z" agent="AWS-SAA" etag="aws-saa" version="21.0.0" type="device">
+  <diagram id="diagram_1" name="Project 1 Architecture">
+    <mxGraphModel dx="1422" dy="850" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="user" value="Internet Users / Clients" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="250" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="r53" value="Amazon Route 53
+(DNS Alias Record)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="250" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="cf" value="Amazon CloudFront
+(Edge CDN &amp; Static Cache)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="420" y="250" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="waf" value="AWS WAF
+(OWASP Top 10 + Rate Limit)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="420" y="160" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vpc" value="Custom VPC (10.0.0.0/16)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#FF9900;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="620" y="80" width="850" height="460" as="geometry" />
+        </mxCell>
+        <mxCell id="az1" value="Availability Zone 1 (us-east-1a)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#4A90E2;dashed=1;verticalAlign=top;align=left;spacingLeft=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="120" width="390" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="az2" value="Availability Zone 2 (us-east-1b)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#4A90E2;dashed=1;verticalAlign=top;align=left;spacingLeft=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="120" width="400" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="alb" value="Application Load Balancer (ALB)
+[Public Subnets: 10.0.1.0/24 &amp; 10.0.2.0/24]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="750" y="160" width="580" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ec2_1" value="EC2 Instance 1 (Apache/PHP)
+Private Subnet (10.0.10.0/24)
+SSM Session Manager Enabled" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" vertex="1" parent="1">
+          <mxGeometry x="660" y="270" width="200" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="ec2_2" value="EC2 Instance 2 (Apache/PHP)
+Private Subnet (10.0.20.0/24)
+SSM Session Manager Enabled" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="270" width="200" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="rds_primary" value="Amazon RDS Multi-AZ (Primary)
+MySQL 8.0 - Private Subnet" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="420" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rds_standby" value="Amazon RDS Standby Replica
+(Synchronous Replication)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontStyle=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="420" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cw" value="CloudWatch &amp; SNS Alarms
+CPU &gt; 70% Scale Out" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;" vertex="1" parent="1">
+          <mxGeometry x="890" y="300" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="Queries domain" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="user" target="r53">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="Points to CloudFront" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="r53" target="cf">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="Inspects request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="cf" target="waf">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="Origin fetch (HTTPS)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="cf" target="alb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="Traffic Distribution" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="alb" target="ec2_1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="Traffic Distribution" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="alb" target="ec2_2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="DB Queries (Port 3306)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="ec2_1" target="rds_primary">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="DB Queries (Port 3306)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="ec2_2" target="rds_primary">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="Sync Replication" style="edgeStyle=orthogonalEdgeStyle;dashed=1;strokeColor=#D6B656;strokeWidth=2;" edge="1" parent="1" source="rds_primary" target="rds_standby">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="Trigger Scale" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="cw" target="ec2_1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" value="Trigger Scale" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="cw" target="ec2_2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

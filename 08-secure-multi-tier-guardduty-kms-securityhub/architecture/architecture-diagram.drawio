@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-11-14T00:00:00.000Z" agent="AWS-SAA" etag="aws-saa" version="21.0.0" type="device">
+  <diagram id="diagram_1" name="Project 8 Architecture">
+    <mxGraphModel dx="1422" dy="850" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="perimeter" value="Perimeter Security
+AWS WAF + AWS Shield Standard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="250" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="app_tier" value="Three-Tier Architecture (VPC)
+Web Tier -&gt; App Tier -&gt; DB Tier
+(Strict Least-Privilege SGs)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="270" y="230" width="230" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="kms" value="AWS KMS (Customer Managed Keys)
+Envelope Encryption (EBS, RDS, S3)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="100" width="230" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="secrets" value="AWS Secrets Manager
+Automated RDS Password Rotation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="380" width="230" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cloudtrail" value="AWS CloudTrail (Multi-Region)
+Log File Validation &amp; KMS Encrypted" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="100" width="230" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="guardduty" value="Amazon GuardDuty
+Intelligent Threat Detection (ML/Threat Intel)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="200" width="230" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="config" value="AWS Config
+Compliance Rules &amp; Auto-Remediation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="300" width="230" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="securityhub" value="AWS Security Hub
+Centralized Findings &amp; CIS Benchmark Score" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontStyle=1;strokeWidth=3;" vertex="1" parent="1">
+          <mxGeometry x="840" y="230" width="240" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="remediation" value="EventBridge + Lambda Remediation
+(Auto-Isolate Compromised Instances)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="240" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="Filtered Clean Traffic" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="perimeter" target="app_tier">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="Encrypt at Rest" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="kms" target="app_tier">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="Rotate RDS Secret (30 days)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="secrets" target="app_tier">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="Audit API Calls" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="app_tier" target="cloudtrail">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="VPC Flow / DNS / CloudTrail Logs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="cloudtrail" target="guardduty">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="Forward Threat Findings" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="guardduty" target="securityhub">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="Compliance Violations" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="config" target="securityhub">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="Trigger Auto-Remediation" style="strokeColor=#B85450;strokeWidth=2;" edge="1" parent="1" source="securityhub" target="remediation">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

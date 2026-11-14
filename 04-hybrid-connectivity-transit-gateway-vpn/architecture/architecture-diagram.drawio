@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-11-14T00:00:00.000Z" agent="AWS-SAA" etag="aws-saa" version="21.0.0" type="device">
+  <diagram id="diagram_1" name="Project 4 Architecture">
+    <mxGraphModel dx="1422" dy="850" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="onprem" value="On-Premises Data Center
+(CIDR: 192.168.0.0/16)
+Customer Gateway (CGW)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="250" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="vpn" value="AWS Site-to-Site VPN
+(Dual IPsec Tunnels + BGP)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="260" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="tgw" value="AWS Transit Gateway (TGW)
+(Central Network Hub &amp; Route Tables)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="540" y="230" width="220" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="r53_res" value="Route 53 Resolver
+(Inbound &amp; Outbound Endpoints)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="540" y="100" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="fw_vpc" value="Inspection VPC (10.100.0.0/16)
+AWS Network Firewall" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="820" y="80" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="dev_vpc" value="Dev VPC (10.10.0.0/16)
+Workloads &amp; Dev Apps" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="820" y="180" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="stage_vpc" value="Staging VPC (10.20.0.0/16)
+Pre-production Testing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="820" y="280" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="prod_vpc" value="Prod VPC (10.30.0.0/16)
+Mission Critical Workloads" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="820" y="380" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="ram" value="AWS Resource Access Manager (RAM)
+Multi-Account Sharing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;" vertex="1" parent="1">
+          <mxGeometry x="540" y="420" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="IPsec Tunnel 1 &amp; 2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="onprem" target="vpn">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="BGP Route Propagation" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="vpn" target="tgw">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="Inspection Egress" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="tgw" target="fw_vpc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="TGW Attachment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="tgw" target="dev_vpc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="TGW Attachment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="tgw" target="stage_vpc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="TGW Attachment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="tgw" target="prod_vpc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="DNS Forwarding (corp.local)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="onprem" target="r53_res">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="Private DNS Resolution" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="r53_res" target="tgw">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="Cross-Account Share" style="dashed=1;" edge="1" parent="1" source="ram" target="tgw">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

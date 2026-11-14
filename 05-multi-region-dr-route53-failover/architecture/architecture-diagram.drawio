@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-11-14T00:00:00.000Z" agent="AWS-SAA" etag="aws-saa" version="21.0.0" type="device">
+  <diagram id="diagram_1" name="Project 5 Architecture">
+    <mxGraphModel dx="1422" dy="850" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="users" value="Global End Users" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="250" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="r53" value="Amazon Route 53
+Failover Routing Policy
+Health Check Probes (10s)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontStyle=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="240" y="230" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="reg1" value="Primary Region: us-east-1 (Active Stack)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#0073BB;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="470" y="80" width="400" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="alb_prim" value="Primary ALB (us-east-1)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="130" width="340" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="asg_prim" value="EC2 Auto Scaling Group
+(Desired: 4 Instances)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" vertex="1" parent="1">
+          <mxGeometry x="500" y="220" width="340" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="aurora_prim" value="Aurora Global DB (Primary Writer)
+sub-1s Global Replication" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="320" width="340" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="s3_prim" value="S3 Primary Assets Bucket" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;" vertex="1" parent="1">
+          <mxGeometry x="500" y="400" width="340" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="reg2" value="Secondary Region: eu-west-1 (Warm Standby)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#82B366;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=10;fontStyle=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="920" y="80" width="400" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="alb_sec" value="Secondary ALB (eu-west-1)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="950" y="130" width="340" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="asg_sec" value="EC2 Auto Scaling Group
+(Warm Standby: 1 Instance -&gt; Scales to 4)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" vertex="1" parent="1">
+          <mxGeometry x="950" y="220" width="340" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="aurora_sec" value="Aurora Global Read Replica
+(Auto-Promotable in &lt; 1 min)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="950" y="320" width="340" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="s3_sec" value="S3 Cross-Region Replicated Bucket" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;" vertex="1" parent="1">
+          <mxGeometry x="950" y="400" width="340" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="DNS Request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="users" target="r53">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="Primary Routing (Healthy)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="r53" target="alb_prim">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="Automatic Failover Routing" style="dashed=1;strokeColor=#B85450;strokeWidth=2;" edge="1" parent="1" source="r53" target="alb_sec">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="Forward Traffic" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="alb_prim" target="asg_prim">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="Read / Write SQL" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="asg_prim" target="aurora_prim">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="Cross-Region Sync Replication" style="strokeColor=#D6B656;strokeWidth=3;" edge="1" parent="1" source="aurora_prim" target="aurora_sec">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="S3 CRR (Async)" style="strokeColor=#D79B00;strokeWidth=2;" edge="1" parent="1" source="s3_prim" target="s3_sec">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="Forward Traffic" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="alb_sec" target="asg_sec">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="Read Queries" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="asg_sec" target="aurora_sec">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
